@@ -68,11 +68,11 @@ async function testDepositWithdraw() {
   assert.equal((await bnbChef.pendingReward(bob.address)).toString(), '1399')
 }
 
-async function main() {
+export async function main() {
   await testDepositWithdraw()
 }
 
-main().catch((error) => {
-  console.error(error)
-  process.exitCode = 1
-})
+// main().catch((error) => {
+//   console.error(error)
+//   process.exitCode = 1
+// })

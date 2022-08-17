@@ -161,7 +161,7 @@ async function testPermit() {
   const { v, r, s } = ecsign(
     Buffer.from(digest.slice(2), 'hex'),
     Buffer.from(
-      process.env.HUYGENS_PRIVATE_KEY ? process.env.HUYGENS_PRIVATE_KEY : '',
+      process.env.CCNBETA_PRIVATE_KEY ? process.env.CCNBETA_PRIVATE_KEY : '',
       'hex'
     )
   )

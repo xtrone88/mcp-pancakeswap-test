@@ -215,7 +215,7 @@ async function testStakingUnstaking() {
   assert.equal((await cake.balanceOf(alice.address)).toString(), '749')
 }
 
-async function testUpdaateMultiplier() {
+async function testUpdateMultiplier() {
   await beforeEach()
   const [minter, dev, alice, bob, carol] = await ethers.getSigners()
 
@@ -273,15 +273,15 @@ async function testAllowDev() {
   assert.equal((await chef.devaddr()).valueOf(), alice.address)
 }
 
-async function main() {
+export async function main() {
   await testRealCase()
   await testDepositWithdraw()
   await testStakingUnstaking()
-  // await testUpdaateMultiplier()
+  // await testUpdateMultiplier()
   await testAllowDev()
 }
 
-main().catch((error) => {
-  console.error(error)
-  process.exitCode = 1
-})
+// main().catch((error) => {
+//   console.error(error)
+//   process.exitCode = 1
+// })

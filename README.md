@@ -1,7 +1,9 @@
 # Test Pancakeswap
-### 1. Installation
+### Installation
 yarn install
-### 2. Compile
+### Compile
 npx hardhat compile
-### 3. Test
+### Config
+Rename .env.example to .env and open it, then fill the ccnbeta's url and account's private key.<br>
+### Test
 yarn run test

@@ -56,19 +56,19 @@ const config: HardhatUserConfig = {
   },
   networks: {
     ccnbeta: {
-      url: process.env.HUYGENS_URL || '',
+      url: process.env.CCNBETA_URL || '',
       accounts:
-        process.env.HUYGENS_PRIVATE_KEY !== undefined &&
-        process.env.HUYGENS_PRIVATE_KEY2 !== undefined &&
-        process.env.HUYGENS_PRIVATE_KEY3 !== undefined &&
-        process.env.HUYGENS_PRIVATE_KEY4 !== undefined &&
-        process.env.HUYGENS_PRIVATE_KEY5 !== undefined
+        process.env.CCNBETA_PRIVATE_KEY !== undefined &&
+        process.env.CCNBETA_PRIVATE_KEY2 !== undefined &&
+        process.env.CCNBETA_PRIVATE_KEY3 !== undefined &&
+        process.env.CCNBETA_PRIVATE_KEY4 !== undefined &&
+        process.env.CCNBETA_PRIVATE_KEY5 !== undefined
           ? [
-              process.env.HUYGENS_PRIVATE_KEY,
-              process.env.HUYGENS_PRIVATE_KEY2,
-              process.env.HUYGENS_PRIVATE_KEY3,
-              process.env.HUYGENS_PRIVATE_KEY4,
-              process.env.HUYGENS_PRIVATE_KEY5,
+              process.env.CCNBETA_PRIVATE_KEY,
+              process.env.CCNBETA_PRIVATE_KEY2,
+              process.env.CCNBETA_PRIVATE_KEY3,
+              process.env.CCNBETA_PRIVATE_KEY4,
+              process.env.CCNBETA_PRIVATE_KEY5,
             ]
           : [],
     },

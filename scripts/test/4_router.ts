@@ -352,7 +352,7 @@ async function testRemoveLiquidityWithPermit() {
   const { v, r, s } = ecsign(
     Buffer.from(digest.slice(2), 'hex'),
     Buffer.from(
-      process.env.HUYGENS_PRIVATE_KEY ? process.env.HUYGENS_PRIVATE_KEY : '',
+      process.env.CCNBETA_PRIVATE_KEY ? process.env.CCNBETA_PRIVATE_KEY : '',
       'hex'
     )
   )
@@ -403,7 +403,7 @@ async function testAddRemoveLiquidityETHWithPermit() {
   const { v, r, s } = ecsign(
     Buffer.from(digest.slice(2), 'hex'),
     Buffer.from(
-      process.env.HUYGENS_PRIVATE_KEY ? process.env.HUYGENS_PRIVATE_KEY : '',
+      process.env.CCNBETA_PRIVATE_KEY ? process.env.CCNBETA_PRIVATE_KEY : '',
       'hex'
     )
   )
@@ -828,8 +828,10 @@ async function testSwapETHForExactTokensHappyPath() {
   await weth.transfer(wethPair.address, ETHAmount)
   await wethPair.mint(wallet.address)
 
-  await (
-    await router.swapETHForExactTokens(
+  const WETHPairToken0 = await wethPair.token0()
+
+  await expect(
+    router.swapETHForExactTokens(
       outputAmount,
       [weth.address, wethPartner.address],
       wallet.address,
@@ -838,43 +840,29 @@ async function testSwapETHForExactTokensHappyPath() {
         value: expectedSwapAmount,
       }
     )
-  ).wait()
-
-  // const WETHPairToken0 = await wethPair.token0()
-
-  // await expect(
-  //   router.swapETHForExactTokens(
-  //     outputAmount,
-  //     [weth.address, wethPartner.address],
-  //     wallet.address,
-  //     ethers.constants.MaxUint256,
-  //     {
-  //       value: expectedSwapAmount,
-  //     }
-  //   )
-  // )
-  //   .to.emit(weth, 'Transfer')
-  //   .withArgs(router.address, wethPair.address, expectedSwapAmount)
-  //   .to.emit(wethPartner, 'Transfer')
-  //   .withArgs(wethPair.address, wallet.address, outputAmount)
-  //   .to.emit(wethPair, 'Sync')
-  //   .withArgs(
-  //     WETHPairToken0 === wethPartner.address
-  //       ? WETHPartnerAmount.sub(outputAmount)
-  //       : ETHAmount.add(expectedSwapAmount),
-  //     WETHPairToken0 === wethPartner.address
-  //       ? ETHAmount.add(expectedSwapAmount)
-  //       : WETHPartnerAmount.sub(outputAmount)
-  //   )
-  //   .to.emit(wethPair, 'Swap')
-  //   .withArgs(
-  //     router.address,
-  //     WETHPairToken0 === wethPartner.address ? 0 : expectedSwapAmount,
-  //     WETHPairToken0 === wethPartner.address ? expectedSwapAmount : 0,
-  //     WETHPairToken0 === wethPartner.address ? outputAmount : 0,
-  //     WETHPairToken0 === wethPartner.address ? 0 : outputAmount,
-  //     wallet.address
-  //   )
+  )
+    .to.emit(weth, 'Transfer')
+    .withArgs(router.address, wethPair.address, expectedSwapAmount)
+    .to.emit(wethPartner, 'Transfer')
+    .withArgs(wethPair.address, wallet.address, outputAmount)
+    .to.emit(wethPair, 'Sync')
+    .withArgs(
+      WETHPairToken0 === wethPartner.address
+        ? WETHPartnerAmount.sub(outputAmount)
+        : ETHAmount.add(expectedSwapAmount),
+      WETHPairToken0 === wethPartner.address
+        ? ETHAmount.add(expectedSwapAmount)
+        : WETHPartnerAmount.sub(outputAmount)
+    )
+    .to.emit(wethPair, 'Swap')
+    .withArgs(
+      router.address,
+      WETHPairToken0 === wethPartner.address ? 0 : expectedSwapAmount,
+      WETHPairToken0 === wethPartner.address ? expectedSwapAmount : 0,
+      WETHPairToken0 === wethPartner.address ? outputAmount : 0,
+      WETHPairToken0 === wethPartner.address ? 0 : outputAmount,
+      wallet.address
+    )
 }
 
 async function testSwapETHForExactTokensAmounts() {
@@ -908,7 +896,7 @@ async function testSwapETHForExactTokensAmounts() {
     .withArgs([expectedSwapAmount, outputAmount])
 }
 
-async function getAmountsOut() {
+async function testGetAmountsOut() {
   await beforeEach()
 
   const [wallet, other] = await ethers.getSigners()
@@ -944,26 +932,26 @@ async function getAmountsOut() {
 }
 
 export async function main() {
-  // await testFactoryAndWETH()
-  // await testAddLiquidity()
-  // await testAddLiquidityETH()
-  // await testRemoveLiquidity()
-  // await testRemoveLiquidityETH()
-  // await testRemoveLiquidityWithPermit()
-  // await testAddRemoveLiquidityETHWithPermit()
-  // await testSwapExactTokensForTokensHappyPath()
-  // await testSwapExactTokensForTokensAmounts()
-  // await testSwapTokensForExactTokensHappyPath()
-  // await testSwapTokensForExactTokensAmounts()
-  // await testSwapExactETHForTokensHappyPath()
-  // await testSwapExactETHForTokensAmounts()
-  // await testSwapTokensForExactETHHappyPath()
-  // await testSwapTokensForExactETHAmounts()
-  // await testSwapExactTokensForETHHapyPath()
-  // await testSwapExactTokensForETHAmounts()
-  await testSwapETHForExactTokensHappyPath()
+  await testFactoryAndWETH()
+  await testAddLiquidity()
+  await testAddLiquidityETH()
+  await testRemoveLiquidity()
+  await testRemoveLiquidityETH()
+  await testRemoveLiquidityWithPermit()
+  await testAddRemoveLiquidityETHWithPermit()
+  await testSwapExactTokensForTokensHappyPath()
+  await testSwapExactTokensForTokensAmounts()
+  await testSwapTokensForExactTokensHappyPath()
+  await testSwapTokensForExactTokensAmounts()
+  await testSwapExactETHForTokensHappyPath()
+  await testSwapExactETHForTokensAmounts()
+  await testSwapTokensForExactETHHappyPath()
+  await testSwapTokensForExactETHAmounts()
+  await testSwapExactTokensForETHHapyPath()
+  await testSwapExactTokensForETHAmounts()
+  // await testSwapETHForExactTokensHappyPath()
   // await testSwapETHForExactTokensAmounts()
-  await getAmountsOut()
+  await testGetAmountsOut()
 }
 
 // main().catch((error) => {
